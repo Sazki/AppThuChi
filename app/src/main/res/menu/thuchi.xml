@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/chi"
+        android:title="Tiền chi"
+        android:icon="@android:color/transparent"
+        />
+
+    <item android:id="@+id/thu"
+        android:title="Thu nhập"
+        android:icon="@android:color/transparent"/>
+</menu>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "43942600048",
+    "project_id": "appthuchi-70afa",
+    "storage_bucket": "appthuchi-70afa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43942600048:android:f85bc6cf3033401148c3b5",
+        "android_client_info": {
+          "package_name": "com.example.appcuoiky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMR6F2ai-2MotkeTuSs5Ee5kkVbg39E0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

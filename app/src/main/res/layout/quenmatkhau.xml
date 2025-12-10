@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".database.ui.dangki"
+    android:background="@color/bg2"
+    android:id="@+id/FL2">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsregular"
+            android:text="Quên mật khẩu"
+            android:textColor="@color/bg1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meo Thần Tài"
+            android:fontFamily="@font/baloo"
+            android:textSize="45sp"
+            android:textColor="@color/bg1"
+            />
+    </LinearLayout>
+    <ImageView
+        android:src="@drawable/meo2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="60dp"
+        />
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="500dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="270dp"
+        android:background="@drawable/border"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/poppins"
+            android:text="Đổi mật khẩu"
+            android:textColor="@color/bg2"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="-50dp"
+            android:src="@drawable/paws"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:fontFamily="@font/poppinsregular"
+            android:text="Email"
+            android:textColor="@color/bg2"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/email2"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border2"
+            android:fontFamily="@font/poppinsregular"
+            android:hint="   hello@reallygreatsite.com" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppinsregular"
+            android:text="Mật khẩu mới"
+            android:textColor="@color/bg2"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/mk1"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border2"
+            android:ems="10"
+            android:fontFamily="@font/poppinsregular"
+            android:hint="  ******"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppinsregular"
+            android:text="Nhập lại mật khẩu"
+            android:textColor="@color/bg2"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/password1"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border2"
+            android:ems="10"
+            android:fontFamily="@font/poppinsregular"
+            android:hint="  ******"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/thaydoi"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/bg2"
+            android:fontFamily="@font/poppinsregular"
+            android:text="Thay đổi"
+            android:textColor="@color/bg1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="660dp"
+        android:layout_marginLeft="15dp"
+        >
+
+        <Button
+            android:id="@+id/quaylai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/bg1"
+            android:text="Quay lại"
+            android:textColor="@color/bg2"
+            android:fontFamily="@font/poppinsregular"/>
+    </LinearLayout>
+</FrameLayout>
