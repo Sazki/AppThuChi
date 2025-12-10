@@ -9,5 +9,7 @@
     <style name="NoIconStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconSize">0dp</item>
     </style>
-
+    <style name="nav">
+    <item name="android:navigationBarColor">@color/bg1 </item>
+    </style>
 </resources>

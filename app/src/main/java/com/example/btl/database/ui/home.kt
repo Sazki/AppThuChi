@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.btl.R
-import com.example.btl.database.ui.chi
-import com.example.btl.database.ui.dangki
-import com.example.btl.database.ui.trangchu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class Navigation : Fragment() {
+class home : Fragment() {
 
 
         override fun onCreateView(
@@ -30,7 +27,7 @@ class Navigation : Fragment() {
             bottomNav.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.home -> {
-                        replaceChildFragment(trangchu())
+                        replaceChildFragment(thu_chi())
                         true
                     }
                     R.id.thongke -> {
@@ -50,7 +47,8 @@ class Navigation : Fragment() {
             }
 
             // Mặc định mở trang chủ
-            replaceChildFragment(trangchu())
+            replaceChildFragment(thu_chi())
+
         }
 
         private fun replaceChildFragment(fragment: Fragment) {

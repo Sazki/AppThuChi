@@ -5,10 +5,12 @@
         android:title="Trang chủ"
         android:icon="@drawable/home"/>
     <item android:id="@+id/thongke"
-        android:title="Thống kê"/>
+        android:title="Thống kê"
+        android:icon="@drawable/home"/>
 <!--        android:icon=""-->
     <item android:id="@+id/ai"
-        android:title="AI"/>
+        android:title="AI"
+        android:icon="@drawable/home"/>
     <item android:id="@+id/taikhoan"
         android:title="Tài khoản "
         android:icon="@drawable/profile"/>

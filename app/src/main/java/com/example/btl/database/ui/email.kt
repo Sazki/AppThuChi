@@ -22,7 +22,7 @@ class email : Fragment() {
         val quaylai = view.findViewById<Button>(R.id.quaylai1)
 
         xacnhan.setOnClickListener {
-           val fragmentA = Navigation()
+           val fragmentA = home()
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.FL3, fragmentA)

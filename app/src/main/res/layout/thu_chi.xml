@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="13dp"
+        android:background="@color/bg2"
+        android:paddingHorizontal="16dp">
+        <TextView
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/bg1"
+            android:layout_centerInParent="true" android:layout_height="9px" android:layout_width="9px"/>
+    </RelativeLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:minHeight="?attr/actionBarSize"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
