@@ -13,8 +13,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class ReportFragment : Fragment() {
 
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager2
+    public lateinit var tabLayout: TabLayout
+    public lateinit var viewPager: ViewPager2
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_report_container, container, false)

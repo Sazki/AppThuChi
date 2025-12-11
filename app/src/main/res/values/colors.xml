@@ -6,4 +6,9 @@
     <color name="light_bg">#DCE9E7</color>
     <color name="gray_bg">#D6E4E2</color>
     <color name="colorPrimary">#5C7872</color>
+        <color name="bg1">#58706a</color>
+        <color name="bg2">#dde6e8</color>
+        <color name="bg3">#404946</color>
+        <color name="bg4">#B13B16</color>
+
 </resources>

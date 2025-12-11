@@ -1,4 +1,4 @@
-package com.example.btl.database.ui
+package com.example.appcuoiky.view
 
 
 import android.os.Bundle
@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.btl.R
-import com.example.btl.database.ui.chi
-import com.example.btl.database.ui.dangki
-import com.example.btl.database.ui.trangchu
+import com.example.appcuoiky.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Navigation : Fragment() {
@@ -30,19 +27,19 @@ class Navigation : Fragment() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceChildFragment(trangchu())
+                    replaceChildFragment(thu_chi())
                     true
                 }
                 R.id.thongke -> {
-                    replaceChildFragment(chi())
+                    replaceChildFragment(CalendarFragment())
                     true
                 }
                 R.id.ai -> {
-                    replaceChildFragment(quenmatkhau())
+                    replaceChildFragment(ReportFragment())
                     true
                 }
                 R.id.taikhoan -> {
-                    replaceChildFragment(dangki())
+                    replaceChildFragment(SettingsFragment())
                     true
                 }
                 else -> false
@@ -50,7 +47,7 @@ class Navigation : Fragment() {
         }
 
         // Mặc định mở trang chủ
-        replaceChildFragment(trangchu())
+        replaceChildFragment(thu_chi())
     }
 
     private fun replaceChildFragment(fragment: Fragment) {

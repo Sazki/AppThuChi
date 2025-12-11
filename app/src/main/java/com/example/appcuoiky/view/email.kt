@@ -1,4 +1,4 @@
-package com.example.btl.database.ui
+package com.example.appcuoiky.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.btl.R
+import com.example.appcuoiky.R
 
 
 class email : Fragment() {
@@ -22,7 +22,7 @@ class email : Fragment() {
         val quaylai = view.findViewById<Button>(R.id.quaylai1)
 
         xacnhan.setOnClickListener {
-            val fragmentA = Navigation()
+           val fragmentA = home()
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.FL3, fragmentA)

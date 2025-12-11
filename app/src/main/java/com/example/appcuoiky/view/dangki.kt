@@ -1,4 +1,4 @@
-package com.example.btl.database.ui
+package com.example.appcuoiky.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.btl.R
-import com.example.btl.database.MainActivity
+import com.example.appcuoiky.R
 
 
 class dangki : Fragment() {

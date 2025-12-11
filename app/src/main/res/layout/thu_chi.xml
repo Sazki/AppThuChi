@@ -3,24 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light_bg">
+    android:background="@color/bg2">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/main_green"
+        android:layout_height="50dp"
+        android:background="@color/bg1"
         android:paddingHorizontal="16dp">
+
         <TextView
-            android:text="Báo cáo"
+            android:layout_width="9px"
+            android:layout_height="9px"
+            android:layout_centerInParent="true"
+            android:text=""
+            android:textColor="@color/bg2"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_centerInParent="true" android:layout_height="9px" android:layout_width="9px"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
         android:background="@color/bg2"
         android:minHeight="?attr/actionBarSize"/>

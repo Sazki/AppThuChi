@@ -1,4 +1,4 @@
-package com.example.btl.database.ui
+package com.example.appcuoiky.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,10 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.btl.R
-//import com.example.btl.adapter.adapterdanhmuc
-import com.example.btl.adapter.adapterdanhmucthu
-import com.example.btl.database.viewmodel.danhmucthu
+import com.example.appcuoiky.R
+import com.example.appcuoiky.adapter.adapterdanhmucthu
+import com.example.appcuoiky.viewmodel.danhmucthu
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -62,7 +61,7 @@ class thu : Fragment() {
             updateDate()
         }
 
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
 
         val list = mutableListOf(
             danhmucthu(1, "Tiền lương", R.drawable.luong),
@@ -72,14 +71,47 @@ class thu : Fragment() {
             danhmucthu(5, "Đầu tư", R.drawable.dt),
         )
 
-        adapter = adapterdanhmucthu(list) { selected ->
-            Toast.makeText(
-                requireContext(),
-                "Đã chọn: ${selected.name1}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        adapter = adapterdanhmucthu(
+            list,
+            onSelected = { selected ->
+                Toast.makeText(
+                    requireContext(),
+                    "Đã chọn: ${selected.name1}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },
+            onAddClicked = {
+
+                val dialog = android.app.AlertDialog.Builder(requireContext())
+                val input = android.widget.EditText(requireContext())
+                input.hint = "Nhập tên danh mục"
+
+                dialog.setTitle("Thêm danh mục mới")
+                dialog.setView(input)
+
+                dialog.setPositiveButton("Thêm") { _, _ ->
+                    val name = input.text.toString().trim()
+
+                    if (name.isNotEmpty()) {
+                        val newItem = danhmucthu(
+                            id1 = list.size + 1,
+                            name1 = name,
+                            iconRes1 = R.drawable.mn,   // icon cố định
+                            isSelected1 = false
+                        )
+                        adapter.addCategory(newItem)
+                    } else {
+                        Toast.makeText(requireContext(), "Tên không được để trống", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                dialog.setNegativeButton("Hủy", null)
+                dialog.show()
+
+            }
+        )
+
 
         recyclerView.adapter = adapter
     }
-}
+    }

@@ -1,12 +1,12 @@
-package com.example.appcuoiky.database
+package com.example.appcuoiky.view
 
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.btl.R
-import com.example.btl.database.ui.dangki
-import com.example.btl.database.ui.email
-import com.example.btl.database.ui.quenmatkhau
+import com.example.appcuoiky.R
+import com.example.appcuoiky.view.dangki
+import com.example.appcuoiky.view.email
+import com.example.appcuoiky.view.quenmatkhau
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
