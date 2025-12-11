@@ -11,15 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appcuoiky.R
+import com.example.appcuoiky.adapter.CalendarAdapter
 import com.example.appcuoiky.viewmodel.MainViewModel
 import java.text.DecimalFormat
 
-// BẮT BUỘC: Phải kế thừa từ Fragment()
 class CalendarFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
 
-    // Khai báo các view
     private lateinit var tvDate: TextView
     private lateinit var tvThu: TextView
     private lateinit var tvChi: TextView
@@ -29,20 +28,12 @@ class CalendarFragment : Fragment() {
     private lateinit var rvCalendar: RecyclerView
     private lateinit var calendarAdapter: CalendarAdapter
 
-    // Fragment dùng onCreateView thay vì onCreate
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // 1. Nạp giao diện từ file xml (nhớ đổi tên file xml nếu bạn đặt khác)
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
-
-        // 2. Khởi tạo ViewModel
-        // Trong Fragment, owner là "this" (chính fragment này) hoặc "requireActivity()" (nếu muốn dùng chung với Activity cha)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        // 3. Ánh xạ View và Cài đặt
         initViews(view)
         setupCalendar()
         observeData()
@@ -52,7 +43,6 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        // Trong Fragment phải dùng view.findViewById
         tvDate = view.findViewById(R.id.tvDate)
         tvThu = view.findViewById(R.id.tvTotalIncome)
         tvChi = view.findViewById(R.id.tvTotalExpense)
@@ -63,18 +53,20 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setupCalendar() {
-        // Trong Fragment dùng requireContext() thay cho this
         val layoutManager = GridLayoutManager(requireContext(), 7)
         rvCalendar.layoutManager = layoutManager
 
-        calendarAdapter = CalendarAdapter(emptyList())
+        // Khởi tạo Adapter với callback xử lý Click
+        calendarAdapter = CalendarAdapter(emptyList()) { selectedDay ->
+            // Khi click vào ngày -> Gọi ViewModel tính toán lại số liệu ngày đó
+            mainViewModel.selectDate(selectedDay)
+        }
         rvCalendar.adapter = calendarAdapter
     }
 
     private fun observeData() {
         val formatter = DecimalFormat("#,### đ")
 
-        // Fragment dùng viewLifecycleOwner để quan sát LiveData an toàn hơn
         mainViewModel.currentMonth.observe(viewLifecycleOwner) { month ->
             tvDate.text = month
         }
@@ -92,7 +84,7 @@ class CalendarFragment : Fragment() {
         }
 
         mainViewModel.balance.observe(viewLifecycleOwner) { balance ->
-            tvSoDu.text = "Tổng số dư: ${formatter.format(balance)}"
+            tvSoDu.text = "Số dư: ${formatter.format(balance)}"
         }
     }
 

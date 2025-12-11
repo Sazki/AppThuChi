@@ -27,7 +27,7 @@ class home : Fragment() {
             bottomNav.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.home -> {
-                        replaceChildFragment(thu_chi())
+                        replaceChildFragment(InputFragment())
                         true
                     }
                     R.id.thongke -> {
