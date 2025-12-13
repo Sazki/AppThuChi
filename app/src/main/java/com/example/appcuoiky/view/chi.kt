@@ -1,29 +1,68 @@
 package com.example.appcuoiky.view
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appcuoiky.R
 import com.example.appcuoiky.adapter.adapterdanhmuc
 import com.example.appcuoiky.viewmodel.danhmuc
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.UUID
 
 class chi : Fragment() {
 
+    // Khai báo các biến giao diện
     private lateinit var tv_date: TextView
     private lateinit var btn_next: ImageView
     private lateinit var btn_prev: ImageView
     private lateinit var recyclerView: RecyclerView
+
+    // THÊM MỚI: Biến cho 2 ô nhập và nút bấm
+    private lateinit var edtAmount: EditText
+    private lateinit var edtNote: EditText
+    private lateinit var btnSave: Button
+
     private lateinit var adapter: adapterdanhmuc
+
+    private var userId: String? = null
+    private var userName: String? = null
+
+    // THÊM MỚI: Biến để lưu tên danh mục đang được chọn
+    private var selectedCategoryName: String? = null
+
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val list = mutableListOf<danhmuc>()
+
+    private var categoriesListener: ListenerRegistration? = null
+
+    // Calendar dùng chung
+    private val calendar = Calendar.getInstance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        userId = arguments?.getString("userId")
+        userName = arguments?.getString("name")
+
+        if (userId == null) {
+            userId = auth.currentUser?.uid
+        }
+        android.util.Log.d("ChiFragment", "onCreate - userId: $userId, userName: $userName")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,20 +75,25 @@ class chi : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 1. Ánh xạ View (Kết nối code với giao diện XML)
         tv_date = view.findViewById(R.id.tv_date)
         btn_prev = view.findViewById(R.id.btn_prev)
         btn_next = view.findViewById(R.id.btn_next)
         recyclerView = view.findViewById(R.id.rvdanhmuc)
 
-        val calendar = Calendar.getInstance()
+        // Ánh xạ các ID mới thêm trong XML
+        edtAmount = view.findViewById(R.id.edtAmount)
+        edtNote = view.findViewById(R.id.edtNote)
+        btnSave = view.findViewById(R.id.btnSave)
 
-        fun updateDate() {
-            val format = SimpleDateFormat("dd/MM/yyyy (EEE)", Locale("vi", "VN"))
-            tv_date.text = format.format(calendar.time)
+        if (userName != null) {
+            // Toast.makeText(requireContext(), "Xin chào, $userName!", Toast.LENGTH_SHORT).show()
         }
 
+        // Cập nhật ngày hiển thị ban đầu
         updateDate()
 
+        // Xử lý nút qua lại ngày
         btn_prev.setOnClickListener {
             calendar.add(Calendar.DAY_OF_MONTH, -1)
             updateDate()
@@ -60,64 +104,224 @@ class chi : Fragment() {
             updateDate()
         }
 
+        // Setup RecyclerView
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
-
-        val list = mutableListOf(
-            danhmuc(1, "Ăn uống", R.drawable.an),
-            danhmuc(2, "Phí giao lưu", R.drawable.gluu),
-            danhmuc(3, "Y tế", R.drawable.yte),
-            danhmuc(4, "Mỹ phẩm", R.drawable.makeup),
-            danhmuc(5, "Tiền điện", R.drawable.tdien),
-            danhmuc(6, "Tiền nhà", R.drawable.tnha),
-            danhmuc(7, "Chi tiêu khác", R.drawable.other),
-            danhmuc(8, "Giáo dục", R.drawable.hoc),
-            danhmuc(9, "Quần áo", R.drawable.ao)
-        )
 
         adapter = adapterdanhmuc(
             list,
             onSelected = { selected ->
-                Toast.makeText(
-                    requireContext(),
-                    "Đã chọn: ${selected.name}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // 2. LOGIC QUAN TRỌNG: Lưu tên danh mục khi người dùng bấm chọn
+                selectedCategoryName = selected.name
+                // Toast.makeText(requireContext(), "Đã chọn: ${selected.name}", Toast.LENGTH_SHORT).show()
             },
             onAddClicked = {
-
-                val dialog = android.app.AlertDialog.Builder(requireContext())
-                val input = android.widget.EditText(requireContext())
-                input.hint = "Nhập tên danh mục"
-
-                dialog.setTitle("Thêm danh mục mới")
-                dialog.setView(input)
-
-                dialog.setPositiveButton("Thêm") { _, _ ->
-                    val name = input.text.toString().trim()
-
-                    if (name.isNotEmpty()) {
-                        val newItem = danhmuc(
-                            id = list.size + 1,
-                            name = name,
-                            iconRes = R.drawable.money,   // icon cố định
-                            isSelected = false
-                        )
-                        adapter.addCategory(newItem)
-                    } else {
-                        Toast.makeText(requireContext(), "Tên không được để trống", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                dialog.setNegativeButton("Hủy", null)
-                dialog.show()
-
+                showAddCategoryDialog()
             }
         )
 
-
         recyclerView.adapter = adapter
+
+        // Load danh mục từ Firestore
+        loadCategoriesFromFirestore()
+
+        // 3. SỰ KIỆN NÚT "NHẬP KHOẢN CHI"
+        btnSave.setOnClickListener {
+            saveTransaction()
+        }
+    }
+
+    // --- HÀM LƯU GIAO DỊCH LÊN FIREBASE ---
+    private fun saveTransaction() {
+        // Kiểm tra userId
+        if (userId == null) {
+            Toast.makeText(requireContext(), "Lỗi: Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Lấy dữ liệu từ ô nhập
+        val amountStr = edtAmount.text.toString().trim()
+        val note = edtNote.text.toString().trim()
+
+        // Kiểm tra dữ liệu nhập
+        if (amountStr.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập số tiền!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (selectedCategoryName == null) {
+            Toast.makeText(requireContext(), "Vui lòng chọn một danh mục!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        try {
+            val amount = amountStr.toDouble()
+
+            // Lấy ngày hiện tại trên calendar theo định dạng dd/MM/yyyy
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dateString = sdf.format(calendar.time)
+
+            // Tạo ID ngẫu nhiên cho transaction
+            val transId = UUID.randomUUID().toString()
+
+            // Tạo đối tượng dữ liệu
+            val transactionData = hashMapOf(
+                "id" to transId,
+                "userId" to userId!!,           // User ID hiện tại
+                "content" to selectedCategoryName!!, // Content = Tên danh mục (ví dụ: Ăn uống)
+                "amount" to amount,             // Số tiền
+                "type" to "CHI",                // Loại cố định là CHI
+                "date" to dateString,           // Ngày
+                "note" to note                  // Ghi chú
+            )
+
+            // Đẩy lên Firestore
+            firestore.collection("transactions")
+                .document(transId)
+                .set(transactionData)
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "✅ Đã lưu khoản chi thành công!", Toast.LENGTH_SHORT).show()
+                    clearInputs() // Xóa dữ liệu sau khi lưu
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(requireContext(), "❌ Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+
+        } catch (e: NumberFormatException) {
+            Toast.makeText(requireContext(), "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun clearInputs() {
+        edtAmount.setText("")
+        edtNote.setText("")
+        // Không reset selectedCategoryName để user tiện nhập tiếp nếu cùng loại
+    }
+
+    private fun updateDate() {
+        val format = SimpleDateFormat("dd/MM/yyyy (EEE)", Locale("vi", "VN"))
+        tv_date.text = format.format(calendar.time)
+    }
+
+    private fun showAddCategoryDialog() {
+        if (userId == null || userId!!.isEmpty()) {
+            Toast.makeText(requireContext(), "Chưa đăng nhập, không thể thêm danh mục", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+        val input = android.widget.EditText(requireContext())
+        input.hint = "Nhập tên danh mục"
+        dialog.setTitle("Thêm danh mục mới")
+        dialog.setView(input)
+
+        dialog.setPositiveButton("Thêm") { _, _ ->
+            val name = input.text.toString().trim()
+            if (name.isNotEmpty()) {
+                val categoryId = UUID.randomUUID().toString()
+
+                val newCategory = hashMapOf(
+                    "content" to categoryId,
+                    "icon" to "mn",
+                    "name" to name,
+                    "userId" to userId!!,
+                    "type" to "CHI"
+                )
+
+                firestore.collection("category")
+                    .document(categoryId)
+                    .set(newCategory)
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "✅ Đã thêm danh mục: $name", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "❌ Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(requireContext(), "Tên danh mục không được để trống", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        dialog.setNegativeButton("Hủy", null)
+        dialog.show()
+    }
+
+    private fun loadCategoriesFromFirestore() {
+        categoriesListener = firestore.collection("category")
+            .whereEqualTo("type", "CHI")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    list.clear()
+                    val defaultCategories = mutableListOf<danhmuc>()
+                    val userCategories = mutableListOf<danhmuc>()
+
+                    for (doc in snapshot.documents) {
+                        try {
+                            val icon = doc.getString("icon") ?: ""
+                            val name = doc.getString("name") ?: ""
+                            val docUserId = doc.getString("userId") ?: ""
+                            val iconRes = getIconResource(icon)
+
+                            val categoryItem = danhmuc(
+                                id = 0,
+                                name = name,
+                                iconRes = iconRes
+                            )
+
+                            if (docUserId.isEmpty()) {
+                                defaultCategories.add(categoryItem)
+                            } else if (docUserId == userId) {
+                                userCategories.add(categoryItem)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    list.addAll(defaultCategories)
+                    list.addAll(userCategories)
+
+                    list.forEachIndexed { idx, item ->
+                        item.id = idx + 1
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+            }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        categoriesListener?.remove()
+    }
+
+    private fun getIconResource(iconName: String): Int {
+        return try {
+            val resourceId = resources.getIdentifier(
+                iconName.lowercase(),
+                "drawable",
+                requireContext().packageName
+            )
+            if (resourceId != 0) {
+                resourceId
+            } else {
+                R.drawable.mn
+            }
+        } catch (e: Exception) {
+            R.drawable.mn
+        }
+    }
+
+    companion object {
+        fun newInstance(userId: String?, userName: String?): thu {
+            val fragment = thu()
+            val args = Bundle()
+            args.putString("userId", userId)
+            args.putString("name", userName)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }
-
-
-

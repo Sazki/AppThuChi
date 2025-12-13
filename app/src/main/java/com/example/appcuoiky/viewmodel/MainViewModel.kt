@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.appcuoiky.model.Transaction
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
+import com.google.firebase.auth.FirebaseAuth
 
 class MainViewModel : ViewModel() {
 
@@ -68,24 +69,26 @@ class MainViewModel : ViewModel() {
 
     // 2. Tải dữ liệu từ Firebase
     private fun loadDataFromFirestore(month: Int, year: Int) {
-        val userId = "user_test_01" // ID dùng để test
-        val monthYearString = String.format("/%02d/%d", month, year) // vd: "/12/2025"
+        // --- SỬA ĐỔI TẠI ĐÂY ---
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) return // Nếu chưa đăng nhập thì thoát
+        val userId = currentUser.uid
+
+        val monthYearString = String.format("/%02d/%d", month, year)
 
         db.collection("transactions")
-            .whereEqualTo("userId", userId)
+            .whereEqualTo("userId", userId) // Dùng userId thật
             .get()
             .addOnSuccessListener { documents ->
+                // ... code bên trong giữ nguyên ...
                 val list = mutableListOf<Transaction>()
                 for (doc in documents) {
                     val trans = doc.toObject(Transaction::class.java)
-                    // Chỉ lấy các giao dịch thuộc tháng/năm đang xem
                     if (trans.date.endsWith(monthYearString)) {
                         list.add(trans)
                     }
                 }
                 currentMonthTransactions = list
-
-                // Mặc định khi mới chuyển tháng: Hiển thị tổng của CẢ THÁNG
                 calculateTotals(list)
             }
             .addOnFailureListener {

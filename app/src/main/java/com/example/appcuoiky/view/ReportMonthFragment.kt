@@ -28,6 +28,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.google.firebase.auth.FirebaseAuth
 
 class ReportMonthFragment : Fragment() {
 

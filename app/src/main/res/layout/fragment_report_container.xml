@@ -1,32 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light_bg">
+    android:background="@color/gray_bg">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/main_green"
-        android:paddingHorizontal="16dp">
-        <TextView
-            android:text="Báo cáo"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_centerInParent="true" android:layout_height="9px" android:layout_width="9px"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Báo cáo"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:fontFamily="@font/baloo"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/btnAI"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_ai"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:tint="#FFC107" />
+    </RelativeLayout>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg2"
-        android:minHeight="?attr/actionBarSize"/>
+        android:background="@color/white"
+        app:tabIndicatorColor="#4CAF50"
+        app:tabSelectedTextColor="#4CAF50"
+        app:tabTextColor="@color/black"
+        app:tabMode="fixed"
+        app:tabGravity="fill"/>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

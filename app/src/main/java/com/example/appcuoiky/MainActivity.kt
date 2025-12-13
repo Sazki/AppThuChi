@@ -2,30 +2,105 @@ package com.example.appcuoiky.view
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.appcuoiky.R
-import com.example.appcuoiky.view.dangki
-import com.example.appcuoiky.view.email
-import com.example.appcuoiky.view.quenmatkhau
+import com.example.appcuoiky.model.users
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Khởi tạo Firebase
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+
+        val emailLogin = findViewById<EditText>(R.id.email2)
+        val passLogin = findViewById<EditText>(R.id.password2)
+
+        // 1. Xử lý sự kiện nút Đăng nhập
         findViewById<Button>(R.id.login).setOnClickListener {
-            openFragment(email())
-        }
-        findViewById<Button>(R.id.quen).setOnClickListener {
-            openFragment(quenmatkhau())
+            val email = emailLogin.text.toString().trim()
+            val pass = passLogin.text.toString().trim()
+
+            if (email.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập email và mật khẩu", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val uid = auth.currentUser!!.uid
+                        // Đăng nhập thành công -> Lấy dữ liệu và vào Home
+                        fetchUserAndOpenHome(uid, showGreeting = true)
+                    } else {
+                        Toast.makeText(this, "Sai email hoặc mật khẩu!", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
 
+        // 2. Nút Đăng ký
         findViewById<Button>(R.id.singin1).setOnClickListener {
             openFragment(dangki())
         }
+
+        // 3. Nút Quên mật khẩu
+        findViewById<Button>(R.id.quen).setOnClickListener {
+            openFragment(quenmatkhau())
+        }
     }
 
-    private fun openFragment(fragment: androidx.fragment.app.Fragment) {
+    // 4. Tự động đăng nhập khi mở ứng dụng (Logic từ MainActivity1.kt)
+    override fun onStart() {
+        super.onStart()
+        // Kiểm tra nếu đã có user và chưa có fragment nào được load (tránh load lại khi xoay màn hình)
+        if (auth.currentUser != null && supportFragmentManager.backStackEntryCount == 0) {
+            val uid = auth.currentUser!!.uid
+            fetchUserAndOpenHome(uid, showGreeting = false)
+        }
+    }
+
+    // --- HÀM DÙNG CHUNG: Lấy thông tin User và mở màn hình Home ---
+    private fun fetchUserAndOpenHome(uid: String, showGreeting: Boolean) {
+        firestore.collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) {
+                    val user = snapshot.toObject(users::class.java)
+
+                    if (showGreeting) {
+                        Toast.makeText(this, "Chào ${user?.name}", Toast.LENGTH_SHORT).show()
+                    }
+
+                    // Tạo fragment Home và truyền dữ liệu
+                    val fragment = home()
+                    val bundle = Bundle()
+                    bundle.putString("userId", user?.userId)
+                    bundle.putString("name", user?.name)
+                    fragment.arguments = bundle
+
+                    openFragment(fragment)
+                } else {
+                    Toast.makeText(this, "Không tìm thấy dữ liệu người dùng!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Lỗi khi lấy dữ liệu: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.FL1, fragment)
             .addToBackStack(null)

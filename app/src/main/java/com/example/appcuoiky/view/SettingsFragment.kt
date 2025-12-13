@@ -1,6 +1,7 @@
 package com.example.appcuoiky.view
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -102,6 +103,10 @@ class SettingsFragment : Fragment() {
         btnLogout.setOnClickListener {
             viewModel.logout()
             Toast.makeText(context, "Đã đăng xuất", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 
@@ -129,7 +134,10 @@ class SettingsFragment : Fragment() {
         config.setLocale(locale)
 
         // Cập nhật cấu hình
-        requireActivity().resources.updateConfiguration(config, requireActivity().resources.displayMetrics)
+        requireActivity().resources.updateConfiguration(
+            config,
+            requireActivity().resources.displayMetrics
+        )
 
         // Load lại Activity để áp dụng ngôn ngữ mới
         requireActivity().recreate()

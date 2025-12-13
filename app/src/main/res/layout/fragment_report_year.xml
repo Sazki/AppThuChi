@@ -2,100 +2,164 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/light_bg">
+    android:background="@color/bg2"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_rounded_white"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/btnPrevYear"
-            android:src="@android:drawable/ic_media_previous"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:tint="@color/black"
-            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_back"
+            android:padding="8dp"
+            app:tint="#5C7872"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
 
         <TextView
-            android:id="@+id/tvYearDisplay"
-            android:text="2025"
-            android:textStyle="bold"
-            android:background="@drawable/bg_rounded_green"
-            android:paddingHorizontal="40dp"
-            android:paddingVertical="8dp"
-            android:layout_marginHorizontal="15dp"
-            android:textColor="@color/black"
+            android:id="@+id/tvCurrentYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Năm 2025"
+            android:gravity="center"
             android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold"
+            android:textColor="#333333"/>
 
         <ImageView
             android:id="@+id/btnNextYear"
-            android:src="@android:drawable/ic_media_next"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:tint="@color/black"
-            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_next"
+            android:padding="8dp"
+            app:tint="#5C7872"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
     </LinearLayout>
 
-    <View android:layout_width="match_parent" android:layout_height="2dp" android:background="@color/black"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:tabIndicatorColor="#5C7872"
+        app:tabSelectedTextColor="#5C7872"
+        app:tabTextColor="#808080"
+        android:background="@android:color/transparent">
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/yearBarChart"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiêu" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thu nhập" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="10dp"/>
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:layout_marginBottom="16dp">
 
-    <View android:layout_width="match_parent" android:layout_height="3dp" android:background="@color/black"/>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/yearBarChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray_bg"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bg_rounded_green"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng thu:"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tvYearIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 đ"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng chi:"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tvYearExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 đ"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
+            android:layout_marginVertical="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView android:text="Chi:" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                <TextView android:id="@+id/tvYearExpense" android:text="0 đ" android:textSize="16sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <View android:layout_width="2dp" android:layout_height="match_parent" android:background="@color/black"/>
-
-            <LinearLayout
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingStart="10dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView android:text="Thu:" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                <TextView android:id="@+id/tvYearIncome" android:text="0 đ" android:textSize="16sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
+                android:text="Số dư năm:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                android:id="@+id/tvYearBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 đ"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
-
-        <View android:layout_width="match_parent" android:layout_height="2dp" android:background="@color/black" android:layout_marginVertical="5dp"/>
-
-        <TextView
-            android:id="@+id/tvYearBalance"
-            android:text="Tổng số dư còn lại sau khi lấy\n(thu - chi)"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 package com.example.appcuoiky.viewmodel
 
 data class danhmuc(
-    val id: Int,
+    var id: Int,
     val name: String,
     val iconRes: Int,
     var isSelected: Boolean = false

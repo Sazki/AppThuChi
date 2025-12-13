@@ -26,7 +26,7 @@ class ReportViewModel : ViewModel() {
     val totalExpense: LiveData<Double> get() = _totalExpense
     val balance: LiveData<Double> get() = _balance
 
-    // ================== PHẦN BÁO CÁO NĂM (Mock Data) ==================
+    // ================== PHẦN BÁO CÁO NĂM ==================
     private val _yearlyChartData = MutableLiveData<List<BarEntry>>()
     private val _yearlyLabels = MutableLiveData<List<String>>()
     private val _yearTotalIncome = MutableLiveData<Double>()
@@ -42,20 +42,24 @@ class ReportViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
     init {
-        loadYearlyMockData()
-        // Mặc định khi vào sẽ load dữ liệu tháng hiện tại, tab CHI
+        // Mặc định khi vào sẽ load dữ liệu tháng và năm hiện tại, tab CHI
         val calendar = Calendar.getInstance()
         val currentMonth = calendar.get(Calendar.MONTH) + 1
         val currentYear = calendar.get(Calendar.YEAR)
+
         loadDataFromFirestore(currentMonth, currentYear, "CHI")
+        loadYearlyDataFromFirestore(currentYear, "CHI")
     }
 
-    // Hàm load dữ liệu linh hoạt theo loại (type: "THU" hoặc "CHI")
+    // ================== 1. XỬ LÝ DỮ LIỆU THÁNG ==================
     fun loadDataFromFirestore(month: Int, year: Int, type: String) {
-        val userId = "user_test_01" // ID cố định để test
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) return
+        val userId = currentUser.uid
+
         val monthYearString = String.format("/%02d/%d", month, year)
 
-        // 1. Query dữ liệu cho biểu đồ (Theo type được chọn)
+        // 1. Query dữ liệu cho biểu đồ
         db.collection("transactions")
             .whereEqualTo("userId", userId)
             .whereEqualTo("type", type)
@@ -89,11 +93,10 @@ class ReportViewModel : ViewModel() {
                 calculateMonthlyTotals(userId, monthYearString)
             }
             .addOnFailureListener {
-                Log.e("ReportViewModel", "Lỗi load biểu đồ: ", it)
+                Log.e("ReportViewModel", "Lỗi load biểu đồ tháng: ", it)
             }
     }
 
-    // Hàm tính tổng Thu và Chi của tháng (độc lập với biểu đồ) để hiển thị số dư đúng
     private fun calculateMonthlyTotals(userId: String, monthYearString: String) {
         // Tính tổng CHI
         db.collection("transactions")
@@ -125,15 +128,89 @@ class ReportViewModel : ViewModel() {
             }
     }
 
-    private fun loadYearlyMockData() {
-        val entries = ArrayList<BarEntry>()
-        // Mock data năm...
-        entries.add(BarEntry(0f, 2000000f))
-        // ... (Code cũ giữ nguyên)
-        _yearlyChartData.value = entries
-        _yearlyLabels.value = listOf("T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12")
-        _yearTotalIncome.value = 60000000.0
-        _yearTotalExpense.value = 31000000.0
-        _yearBalance.value = 29000000.0
+    // ================== 2. XỬ LÝ DỮ LIỆU NĂM ==================
+    fun loadYearlyDataFromFirestore(year: Int, type: String) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) return
+        val userId = currentUser.uid
+
+        val yearString = "/$year" // Ví dụ: "/2025"
+
+        db.collection("transactions")
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("type", type)
+            .get()
+            .addOnSuccessListener { documents ->
+                val entries = ArrayList<BarEntry>()
+                // Mảng chứa tổng tiền 12 tháng (index 0 = Tháng 1, index 11 = Tháng 12)
+                val monthlyTotals = FloatArray(12) { 0f }
+
+                for (doc in documents) {
+                    val trans = doc.toObject(Transaction::class.java)
+                    // Kiểm tra xem transaction có thuộc năm này không
+                    if (trans.date.endsWith(yearString)) {
+                        try {
+                            // Cắt chuỗi ngày "dd/MM/yyyy" để lấy tháng (MM)
+                            // Vị trí: 01/34/6789 -> index 3,4 là tháng
+                            val monthStr = trans.date.substring(3, 5)
+                            val monthIndex = monthStr.toInt() - 1 // Tháng 1 -> index 0
+
+                            if (monthIndex in 0..11) {
+                                monthlyTotals[monthIndex] += trans.amount.toFloat()
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+
+                // Chuyển mảng thành dữ liệu biểu đồ
+                for (i in 0 until 12) {
+                    entries.add(BarEntry((i + 1).toFloat(), monthlyTotals[i]))
+                }
+
+                _yearlyChartData.value = entries
+
+                // Gán nhãn trục X: T1, T2... T12
+                val labels = (1..12).map { "T$it" }
+                _yearlyLabels.value = labels
+
+                // Tính toán tổng Thu/Chi/Số dư của cả năm
+                calculateYearlyTotals(userId, yearString)
+            }
+            .addOnFailureListener {
+                Log.e("ReportViewModel", "Lỗi load biểu đồ năm: ", it)
+            }
+    }
+
+    private fun calculateYearlyTotals(userId: String, yearString: String) {
+        // Tính tổng CHI cả năm
+        db.collection("transactions")
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("type", "CHI")
+            .get()
+            .addOnSuccessListener { chiDocs ->
+                var totalChi = 0.0
+                for (doc in chiDocs) {
+                    val t = doc.toObject(Transaction::class.java)
+                    if (t.date.endsWith(yearString)) totalChi += t.amount
+                }
+                _yearTotalExpense.value = totalChi
+
+                // Tính tổng THU cả năm
+                db.collection("transactions")
+                    .whereEqualTo("userId", userId)
+                    .whereEqualTo("type", "THU")
+                    .get()
+                    .addOnSuccessListener { thuDocs ->
+                        var totalThu = 0.0
+                        for (doc in thuDocs) {
+                            val t = doc.toObject(Transaction::class.java)
+                            if (t.date.endsWith(yearString)) totalThu += t.amount
+                        }
+                        _yearTotalIncome.value = totalThu
+                        _yearBalance.value = totalThu - totalChi
+                    }
+            }
     }
 }

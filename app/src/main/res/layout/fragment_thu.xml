@@ -21,8 +21,6 @@
             android:layout_marginLeft="3dp"
             />
 
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -60,6 +58,7 @@
 
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,9 +73,9 @@
             android:textColor="@color/bg1"
             android:fontFamily="@font/poppinsregular"
             android:layout_marginLeft="-3dp"
-
             />
         <EditText
+            android:id="@+id/edtNote1"
             android:layout_width="225dp"
             android:layout_height="35dp"
             android:background="@drawable/border5"
@@ -85,6 +84,7 @@
             android:textColor="@color/bg1"
             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,7 +99,9 @@
             android:fontFamily="@font/poppinsregular"
             android:textSize="18sp"
             android:layout_marginLeft="13dp"/>
+
         <EditText
+            android:id="@+id/edtAmount1"
             android:layout_width="225dp"
             android:layout_height="35dp"
             android:background="@drawable/border5"
@@ -117,6 +119,7 @@
             android:textSize="18sp"
             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -143,7 +146,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="10dp">
+
             <Button
+                android:id="@+id/btnSave1"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:text="Nhập khoản thu"
@@ -154,6 +159,5 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
 
 </FrameLayout>

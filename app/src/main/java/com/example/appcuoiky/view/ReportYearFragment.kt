@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +16,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.material.tabs.TabLayout
 import java.text.DecimalFormat
+import java.util.Calendar
 
 class ReportYearFragment : Fragment() {
 
@@ -24,70 +27,140 @@ class ReportYearFragment : Fragment() {
     private lateinit var tvIncome: TextView
     private lateinit var tvExpense: TextView
     private lateinit var tvBalance: TextView
-    private lateinit var tvYearDisplay: TextView
+    private lateinit var tvCurrentYear: TextView
+    private lateinit var btnPrevYear: ImageView
+    private lateinit var btnNextYear: ImageView
+    private lateinit var tabLayout: TabLayout
+
+    // Biến lưu trạng thái hiện tại
+    private var currentYear = Calendar.getInstance().get(Calendar.YEAR)
+    private var currentType = "CHI" // Mặc định xem Chi tiêu
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate layout từ XML
         val view = inflater.inflate(R.layout.fragment_report_year, container, false)
 
-        // Kết nối ViewModel
+        // Khởi tạo ViewModel
         viewModel = ViewModelProvider(this)[ReportViewModel::class.java]
 
-        // Ánh xạ View
+        // Ánh xạ View (Phần này quan trọng, nếu sai ID sẽ bị Crash)
+        initViews(view)
+
+        // Cấu hình biểu đồ
+        setupChartStyle()
+
+        // Cài đặt sự kiện click
+        setupEvents()
+
+        // Lắng nghe dữ liệu từ ViewModel
+        observeData()
+
+        // Load dữ liệu lần đầu
+        reloadChart()
+
+        return view
+    }
+
+    private fun initViews(view: View) {
         barChart = view.findViewById(R.id.yearBarChart)
         tvIncome = view.findViewById(R.id.tvYearIncome)
         tvExpense = view.findViewById(R.id.tvYearExpense)
         tvBalance = view.findViewById(R.id.tvYearBalance)
-        tvYearDisplay = view.findViewById(R.id.tvYearDisplay)
+        tvCurrentYear = view.findViewById(R.id.tvCurrentYear)
+        btnPrevYear = view.findViewById(R.id.btnPrevYear)
+        btnNextYear = view.findViewById(R.id.btnNextYear)
+        tabLayout = view.findViewById(R.id.tabLayoutYear)
+    }
 
-        setupChartStyle()
-        observeData()
+    private fun setupEvents() {
+        // 1. Hiển thị năm hiện tại
+        updateYearDisplay()
 
-        return view
+        // 2. Nút lùi năm
+        btnPrevYear.setOnClickListener {
+            currentYear--
+            updateYearDisplay()
+            reloadChart()
+        }
+
+        // 3. Nút tiến năm
+        btnNextYear.setOnClickListener {
+            currentYear++
+            updateYearDisplay()
+            reloadChart()
+        }
+
+        // 4. Sự kiện chuyển Tab Thu/Chi
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> currentType = "CHI"
+                    1 -> currentType = "THU"
+                }
+                reloadChart()
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+    }
+
+    private fun updateYearDisplay() {
+        tvCurrentYear.text = "Năm $currentYear"
+    }
+
+    private fun reloadChart() {
+        // Gọi hàm load dữ liệu bên ViewModel
+        viewModel.loadYearlyDataFromFirestore(currentYear, currentType)
     }
 
     private fun setupChartStyle() {
         barChart.description.isEnabled = false
         barChart.setDrawGridBackground(false)
+        barChart.setPinchZoom(false)
+        barChart.setScaleEnabled(false)
 
-        // Cấu hình trục X (Hiển thị tháng)
         val xAxis = barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
-        xAxis.labelCount = 12 // Hiện đủ 12 tháng
+        xAxis.labelCount = 12 // Hiển thị đủ 12 tháng
 
-        // Cấu hình trục Y
         barChart.axisLeft.setDrawGridLines(true)
         barChart.axisRight.isEnabled = false
-
         barChart.animateY(1000)
     }
 
     private fun observeData() {
         val formatter = DecimalFormat("#,### đ")
 
-        // 1. Quan sát dữ liệu biểu đồ NĂM
+        // 1. Cập nhật dữ liệu biểu đồ
         viewModel.yearlyChartData.observe(viewLifecycleOwner) { entries ->
-            val dataSet = BarDataSet(entries, "Chi tiêu theo tháng")
-            dataSet.color = Color.parseColor("#5C7872") // Màu xanh chủ đạo
+            val label = if (currentType == "CHI") "Chi tiêu theo tháng" else "Thu nhập theo tháng"
+            val colorCode = if (currentType == "CHI") "#FF5252" else "#4CAF50"
+
+            val dataSet = BarDataSet(entries, label)
+            dataSet.color = Color.parseColor(colorCode)
             dataSet.valueTextSize = 10f
+            dataSet.valueTextColor = Color.BLACK
 
             val data = BarData(dataSet)
-            data.barWidth = 0.6f // Cột to hơn chút
+            data.barWidth = 0.6f
 
             barChart.data = data
             barChart.invalidate()
         }
 
-        // 2. Gán nhãn trục X (T1 - T12)
+        // 2. Cập nhật nhãn trục X (T1 - T12)
         viewModel.yearlyLabels.observe(viewLifecycleOwner) { labels ->
-            barChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+            if (labels.size == 12) {
+                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+            }
         }
 
-        // 3. Quan sát tiền
+        // 3. Cập nhật các số liệu tổng
         viewModel.yearTotalIncome.observe(viewLifecycleOwner) {
             tvIncome.text = formatter.format(it)
         }
@@ -95,7 +168,7 @@ class ReportYearFragment : Fragment() {
             tvExpense.text = formatter.format(it)
         }
         viewModel.yearBalance.observe(viewLifecycleOwner) {
-            tvBalance.text = "Số dư: ${formatter.format(it)}"
+            tvBalance.text = formatter.format(it)
         }
     }
 }
