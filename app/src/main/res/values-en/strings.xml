@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Mèo Thần Tài</string>
+
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Login to continue</string>
+    <string name="signup_title">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="no_account">No account yet?</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="username">Username</string>
+    <string name="welcome">Welcome to</string>
+
+    <string name="settings_general">General Settings</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="language">Language</string>
+    <string name="current_lang">English</string>
+    <string name="logout">Log Out</string>
+    <string name="login_now">Login Now</string>
+    <string name="guest">Guest</string>
+
+    <string name="tab_expense">Expense</string>
+    <string name="tab_income">Income</string>
+    <string name="date">Date</string>
+    <string name="note">Note</string>
+    <string name="amount_income">Income Amount</string>
+    <string name="amount_expense">Amount</string>
+    <string name="category">Category:</string>
+    <string name="btn_save_income">Save Income</string>
+    <string name="btn_save_expense">Save Expense</string>
+    <string name="hint_note">......</string>
+
+    <string name="ai_title">AI Financial Assistant</string>
+    <string name="ai_hello">Hello! I am AI Assistant</string>
+    <string name="ai_desc">Ask me about your finances...</string>
+    <string name="ai_thinking">Thinking...</string>
+    <string name="ai_hint">Type your question...</string>
+    <string name="continue_btn">Continue</string>
+    <string name="vetify_email">Vetify Email</string>
+    <string name="vetify_acc">Vetify Account</string>
+    <string name="enter_code">Please enter the code we sent to your email.</string>
+    <string name="re_code_btn">Resend the code</string>
+    <string name="enter">Vetify</string>
+    <string name="back">Back</string>
+    <string name="report">Report</string>
+    <string name="month_date">Month 12/2025</string>
+    <string name="income_0">Income: 0 đ</string>
+    <string name="expense_0">Expense: 0 đ</string>
+    <string name="balance_0">Balance: 0 đ</string>
+    <string name="year">Year 2025</string>
+    <string name="total_income">Total Income:</string>
+    <string name="total_expense">Total expense</string>
+    <string name="belance_year">Belance_year</string>
+    <string name="add">+ Add</string>
+    <string name="password_by_email">Change passwork by email</string>
+    <string name="change">Change</string>
+    <string name="home">Home</string>
+    <string name="celender">Celender</string>
+</resources>

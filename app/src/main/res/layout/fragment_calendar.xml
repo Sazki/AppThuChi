@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_bg"
+    tools:context=".view.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/main_green"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/celender"
+            android:textSize="20sp"
+            android:textColor="@color/bg2"
+            android:fontFamily="@font/poppins"
+            android:layout_centerVertical="true"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingVertical="15dp">
+
+        <ImageView
+            android:id="@+id/btnPrev"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_media_previous"
+            app:tint="@color/bg1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T12/2025"
+            android:background="@drawable/bg_rounded_green"
+            android:paddingHorizontal="50dp"
+            android:paddingVertical="12dp"
+            android:textSize="20sp"
+            android:textColor="@color/bg2"
+            android:fontFamily="@font/poppins"
+            android:layout_marginHorizontal="15dp"/>
+
+        <ImageView
+            android:id="@+id/btnNext"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_media_next"
+            app:tint="@color/bg1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
+
+    <!-- Calendar Section - Thu nhỏ lại -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/gray_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="6dp">
+            <TextView style="@style/DayOfWeekText" android:text="CN" android:textColor="#D32F2F"/>
+            <TextView style="@style/DayOfWeekText" android:text="T2" android:textColor="@color/bg1" android:fontFamily="@font/poppinsregular" />
+            <TextView style="@style/DayOfWeekText" android:text="T3" android:textColor="@color/bg1" android:fontFamily="@font/poppinsregular"/>
+            <TextView style="@style/DayOfWeekText" android:text="T4" android:textColor="@color/bg1" android:fontFamily="@font/poppinsregular"/>
+            <TextView style="@style/DayOfWeekText" android:text="T5" android:textColor="@color/bg1" android:fontFamily="@font/poppinsregular"/>
+            <TextView style="@style/DayOfWeekText" android:text="T6" android:textColor="@color/bg1" android:fontFamily="@font/poppinsregular"/>
+            <TextView style="@style/DayOfWeekText" android:text="T7" android:textColor="@color/bg1" android:fontFamily="@font/poppinsregular"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:padding="5dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
+
+    <!-- Thông tin Thu Chi Số dư - 1 hàng ngang -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="@color/bg2">
+
+        <TextView
+            android:id="@+id/tvTotalExpense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Chi: 0 đ"
+            android:textSize="12sp"
+            android:textColor="@color/maulich"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/bg1"/>
+
+        <TextView
+            android:id="@+id/tvTotalIncome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thu: 0 đ"
+            android:textSize="12sp"
+            android:textColor="@color/maulich"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/bg1"/>
+
+        <TextView
+            android:id="@+id/tvBalance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Số dư: 0 đ"
+            android:textSize="12sp"
+            android:textColor="@color/maulich"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
+
+    <!-- Lịch sử giao dịch theo ngày -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/bg2">
+
+        <TextView
+            android:id="@+id/tvTransactionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lịch sử giao dịch"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/bg1"
+            android:fontFamily="@font/poppins"
+            android:padding="12dp"
+            android:background="@color/light_bg"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/bg2"/>
+
+        <TextView
+            android:id="@+id/tvEmptyTransaction"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Chọn ngày để xem lịch sử giao dịch"
+            android:textSize="14sp"
+            android:textColor="@color/bg1"
+            android:fontFamily="@font/poppinsregular"
+            android:gravity="center"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+</LinearLayout>

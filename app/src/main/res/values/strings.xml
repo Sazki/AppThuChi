@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">Meo Thần Tài</string>
+
+    <string name="login_title">Đăng nhập</string>
+    <string name="login_subtitle">Đăng nhập để tiếp tục</string>
+    <string name="signup_title">Đăng ký</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="no_account">Chưa có tài khoản?</string>
+    <string name="have_account">Đã có tài khoản?</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="btn_signup">Đăng kí</string>
+    <string name="username">Tên tài khoản</string>
+    <string name="welcome">Welcome to</string>
+
+
+    <string name="settings_general">Cài đặt chung</string>
+    <string name="dark_mode">Chế độ tối (Dark Mode)</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="current_lang">Tiếng Việt</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="login_now">Đăng nhập ngay</string>
+    <string name="guest">Khách</string>
+
+    <string name="tab_expense">Chi tiêu</string>
+    <string name="tab_income">Thu nhập</string>
+    <string name="date">Ngày</string>
+    <string name="note">Ghi chú</string>
+    <string name="amount_income">Tiền thu</string>
+    <string name="amount_expense">Tiền chi</string>
+    <string name="category">Danh mục:</string>
+    <string name="btn_save_income">Nhập khoản thu</string>
+    <string name="btn_save_expense">Nhập khoản chi</string>
+    <string name="hint_note">......</string>
+
+    <string name="ai_title">Trợ Lý AI Chi Tiêu</string>
+    <string name="ai_hello">Xin chào! Tôi là trợ lý AI</string>
+    <string name="ai_desc">Hãy hỏi tôi về tình hình tài chính...</string>
+    <string name="ai_thinking">Đang suy nghĩ...</string>
+    <string name="ai_hint">Nhập câu hỏi của bạn...</string>
+    <string name="continue_btn">Tiếp tục</string>
+    <string name="vetify_email">Xác nhận email</string>
+    <string name="vetify_acc">Xác minh tài khoản</string>
+    <string name="enter_code">Hãy nhập mã chúng tôi đã gửi vào email của bạn</string>
+    <string name="re_code_btn">Gửi lại mã</string>
+    <string name="enter">Xác nhận</string>
+    <string name="back">Quay lại</string>
+    <string name="report">Báo cáo</string>
+    <string name="month_date">Tháng 12/2025</string>
+    <string name="income_0">Thu: 0 đ</string>
+    <string name="expense_0">Chi: 0 đ</string>
+    <string name="balance_0">Số dư: 0 đ</string>
+    <string name="year">Năm 2025</string>
+    <string name="total_income">Tổng thu:</string>
+    <string name="total_expense">Tổng chi:</string>
+    <string name="belance_year">Số dư năm:</string>
+    <string name="add">+ Thêm</string>
+    <string name="password_by_email">Đổi mật khẩu qua email</string>
+    <string name="change">Thay đổi</string>
+    <string name="home">Trang chủ</string>
+    <string name="celender">Lịch</string>
+</resources>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.dangki"
+    android:background="@color/bg2"
+    android:id="@+id/FL1"
+    app:defaultNavHost="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsregular"
+            android:text="@string/login_subtitle"
+            android:textColor="@color/bg1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meo Thần Tài"
+            android:fontFamily="@font/baloo"
+            android:textSize="45sp"
+            android:textColor="@color/bg1"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/meo2" />
+
+    <LinearLayout
+        android:layout_width="335dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/border"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_title"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/bg2"
+            android:textSize="35sp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="35dp"/>
+
+        <ImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="-60dp"
+            android:src="@drawable/paws"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:fontFamily="@font/poppinsregular"
+            android:textColor="@color/bg2"
+            android:textSize="15sp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/email2"
+            android:layout_width="283dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border2"
+            android:fontFamily="@font/poppinsregular"
+            android:hint="hello@reallygreatsite.com"
+            android:paddingLeft="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:fontFamily="@font/poppinsregular"
+            android:textColor="@color/bg2"
+            android:textSize="15sp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
+            android:id="@+id/password2"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border2"
+            android:ems="10"
+            android:fontFamily="@font/poppinsregular"
+            android:hint="******"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp" />
+        <Button
+            android:id="@+id/login"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/bg2"
+            android:text="@string/btn_login"
+            android:textColor="@color/bg1"
+            android:fontFamily="@font/poppinsregular"
+            android:layout_marginLeft="105dp"
+            />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="625dp"
+        android:layout_marginLeft="100dp"
+        >
+
+        <Button
+            android:id="@+id/quen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/bg2"
+            android:fontFamily="@font/poppinsregular"
+            android:text="@string/forgot_password"
+            android:textColor="@color/bg1" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="670dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_account"
+            android:textColor="@color/bg1"
+            />
+        <Button
+            android:id="@+id/singin1"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/bg2"
+            android:text="@string/btn_signup"
+            android:textColor="@color/bg1"
+            android:fontFamily="@font/poppins"/>
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Màu cũ của bạn -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="main_green">#5C7872</color>
+    <color name="light_bg">#DCE9E7</color>
+    <color name="gray_bg">#D6E4E2</color>
+    <color name="colorPrimary">#5C7872</color>
+    <color name="bg1">#58706a</color>
+    <color name="bg2">#dde6e8</color>
+    <color name="bg3">#404946</color>
+    <color name="bg4">#B13B16</color>
+    <color name="maulich">#58706a</color>
+
+    <!-- Màu mới cho AI Assistant -->
+    <color name="primary">#6200EE</color>
+    <color name="primary_dark">#3700B3</color>
+    <color name="primary_light">#BB86FC</color>
+
+    <color name="background_color">#F5F5F5</color>
+    <color name="ai_message_bg">#FFFFFF</color>
+    <color name="ai_avatar_bg">#E8DEF8</color>
+    <color name="chip_background">#F3EDF7</color>
+
+    <color name="text_primary">#1C1B1F</color>
+    <color name="text_secondary">#49454F</color>
+    <color name="text_tertiary">#79747E</color>
+
+    <color name="success">#4CAF50</color>
+    <color name="error">#FF5252</color>
+</resources>

@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Bọc BottomNav để dễ xử lý bo góc -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="659dp"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/border8"
+            app:itemHorizontalTranslationEnabled="false"
+            app:itemIconSize="28dp"
+            app:itemIconTint="@color/color"
+            app:itemTextColor="@color/color"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu" />
+    </FrameLayout>
+
+</LinearLayout>
